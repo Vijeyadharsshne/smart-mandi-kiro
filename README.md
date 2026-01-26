@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Smart Mandi 🛒
 
 A multilingual marketplace web application designed to help local Indian vendors and buyers overcome language barriers and price opacity.
@@ -124,3 +125,7 @@ For support and questions, please open an issue in the repository.
 ---
 
 **Smart Mandi** - Enabling fair and inclusive local trade aligned with Viksit Bharat 🇮🇳
+=======
+# smart-mandi-kiro
+Smart Mandi – AI-powered multilingual local trade platform
+>>>>>>> 5d9470b78ece6cc6369d444e2b1bd9d6a5cc4da2
