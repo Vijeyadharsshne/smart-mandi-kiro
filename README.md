@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# Smart Mandi 🏆 - Finalist-Grade AI Prototype
+# Smart Mandi 🏆 AI Prototype
 
 **Winner-Ready AI-Powered Agricultural Marketplace for Viksit Bharat 🇮🇳**
 
