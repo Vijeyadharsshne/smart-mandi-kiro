@@ -7,8 +7,6 @@
 
 ---
 
-## 🎯 **FINALIST HIGHLIGHTS**
-
 ### **🤖 Explainable AI Excellence**
 - **Confidence Scoring**: Every AI decision includes percentage confidence (85-92%)
 - **Transparent Reasoning**: Detailed explanations for all recommendations
@@ -40,8 +38,6 @@
 - **Small Farmer Guidance**: Specialized support for small-scale farmers
 
 ---
-
-## 🚀 **DEMO-READY FEATURES**
 
 ### **Intelligent Decision Support**
 ```
@@ -106,24 +102,6 @@ Context: Maintains business terminology and cultural sensitivity
 - **Zero Language Barriers** in agricultural trade
 - **₹50,000 Crore Market** transformation potential
 - **Direct Government Alignment** with Viksit Bharat initiatives
-
----
-
-## 🎪 **DEMO INSTRUCTIONS**
-
-### **Quick Start (2 minutes)**
-1. **Toggle Bharat Impact Mode** - Show enhanced farmer protection
-2. **Switch Tamil-English** - Demonstrate multilingual intelligence
-3. **Expand AI Price Analysis** - Show explainable AI with confidence scores
-4. **Trigger Fair Trade Alert** - Enter low price to see farmer protection
-
-### **Full Demo (8 minutes)**
-1. **Finalist Showcase Panel** (1 min) - Overview of AI capabilities
-2. **Bharat Impact Mode** (1.5 min) - Cultural adaptation and farmer focus
-3. **Language Intelligence** (1 min) - Tamil-English seamless switching
-4. **Explainable AI** (2 min) - Price analysis, trends, crop insights
-5. **Fair Trade Protection** (2 min) - Negotiation and farmer protection
-6. **Vision & Impact** (30 sec) - Future roadmap and social impact
 
 ---
 
