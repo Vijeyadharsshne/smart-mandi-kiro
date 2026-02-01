@@ -156,39 +156,9 @@ npm run preview
 
 ---
 
-## 🎯 **JUDGE APPEAL MATRIX**
-
-### **AI/ML Judges** ⭐⭐⭐⭐⭐
-- Explainable AI with confidence scoring
-- Multi-modal intelligence (price, trend, crop, negotiation)
-- Responsible AI with fair trade protection
-- Advanced visualizations and real-time processing
-
-### **Social Impact Judges** ⭐⭐⭐⭐⭐
-- Direct farmer protection and economic empowerment
-- Cultural sensitivity and multilingual inclusion
-- Alignment with Viksit Bharat and Digital India
-- Scalable solution for 10M+ farmers
-
-### **Technical Judges** ⭐⭐⭐⭐⭐
-- Modern React/TypeScript architecture
-- Advanced state management and real-time features
-- Mobile-first responsive design
-- Comprehensive internationalization
-
-### **Business Judges** ⭐⭐⭐⭐⭐
-- Clear market problem (₹50,000 crore agricultural market)
-- Explainable AI solution building farmer trust
-- Government alignment and policy support
-- Scalable business model with social impact
-
----
-
-## 🏅 **AWARDS & RECOGNITION READY**
 
 ### **Innovation Categories**
 - **Best AI Application**: Explainable AI with social impact
-- **Social Impact Award**: Farmer protection and empowerment
 - **Technical Excellence**: Advanced architecture and user experience
 - **Cultural Innovation**: Multilingual AI with Indian context
 
