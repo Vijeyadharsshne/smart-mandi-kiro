@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, ArrowLeft, IndianRupee } from 'lucide-react';
-import { ChatMessage, Negotiation, Listing } from '../types';
-import { translate, detectLanguage } from '../services/translationService';
-import { generateNegotiationResponse, suggestFairPrice } from '../services/priceService';
+import { Send, ArrowLeft, IndianRupee, Brain, Mic } from 'lucide-react';
+import { ChatMessage, Negotiation, Listing, FairTradeAlert as FairTradeAlertType } from '../types';
+import { translate } from '../services/translationService';
+import { generateIntelligentResponse, generateNegotiationSuggestions, generateFairTradeAlert } from '../services/priceService';
+import { FairTradeAlert } from './FairTradeAlert';
 import { useApp } from '../contexts/AppContext';
 
 interface ChatInterfaceProps {
@@ -22,6 +23,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [message, setMessage] = useState('');
   const [offerAmount, setOfferAmount] = useState('');
   const [showOfferInput, setShowOfferInput] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+  const [showAISuggestions, setShowAISuggestions] = useState(true);
+  const [fairTradeAlert, setFairTradeAlert] = useState<FairTradeAlertType | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const isVendor = state.user?.id === negotiation.vendorId;
@@ -30,6 +34,16 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [negotiation.messages]);
+
+  useEffect(() => {
+    // Generate AI suggestions based on current context
+    const suggestions = generateNegotiationSuggestions(
+      listing.product.name,
+      negotiation.currentOffer,
+      isVendor
+    );
+    setAiSuggestions(suggestions);
+  }, [listing.product.name, negotiation.currentOffer, isVendor]);
 
   const sendMessage = (content: string, type: 'text' | 'offer' | 'counter_offer' = 'text', amount?: number) => {
     const newMessage: ChatMessage = {
@@ -54,11 +68,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
     // Simulate AI response after a delay
     setTimeout(() => {
-      const aiResponse = generateNegotiationResponse(
+      const aiResponse = generateIntelligentResponse(
+        content,
         listing.product.name,
         amount || negotiation.currentOffer,
-        !isVendor,
-        state.currentLanguage
+        !isVendor
       );
 
       const aiMessage: ChatMessage = {
@@ -91,16 +105,30 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     const amount = parseFloat(offerAmount);
     if (!amount || amount <= 0) return;
 
+    // Check for fair trade alerts
+    const alert = generateFairTradeAlert(listing.product.name, amount, isVendor);
+    if (alert && state.bharatImpactMode.enabled) {
+      setFairTradeAlert(alert);
+    }
+
     const offerText = `I offer ₹${amount} per ${listing.product.unit}`;
     sendMessage(offerText, 'offer', amount);
     setOfferAmount('');
     setShowOfferInput(false);
   };
 
-  const suggestCounterOffer = () => {
-    const suggested = suggestFairPrice(listing.product.name, negotiation.currentOffer, isVendor);
-    setOfferAmount(suggested.toString());
-    setShowOfferInput(true);
+  const handleSuggestionClick = (suggestion: string) => {
+    if (suggestion.includes('₹')) {
+      // Extract price from suggestion and set as offer
+      const priceMatch = suggestion.match(/₹(\d+)/);
+      if (priceMatch) {
+        setOfferAmount(priceMatch[1]);
+        setShowOfferInput(true);
+      }
+    } else {
+      // Set as message
+      setMessage(suggestion);
+    }
   };
 
   return (
@@ -115,8 +143,24 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             <h3 className="font-semibold">{listing.product.name}</h3>
             <p className="text-sm text-gray-600">{otherPartyName}</p>
           </div>
+          {state.bharatImpactMode.enabled && (
+            <div className="ml-auto flex items-center space-x-1 bg-orange-100 text-orange-700 px-2 py-1 rounded-full text-xs">
+              <span>🇮🇳</span>
+              <span>Fair Trade Mode</span>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Fair Trade Alert */}
+      {fairTradeAlert && (
+        <div className="px-4 py-2">
+          <FairTradeAlert
+            alert={fairTradeAlert}
+            onDismiss={() => setFairTradeAlert(null)}
+          />
+        </div>
+      )}
 
       {/* Current Offer Display */}
       <div className="bg-primary-50 border-b border-primary-200 px-4 py-2">
@@ -158,16 +202,47 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <div ref={messagesEndRef} />
       </div>
 
-      {/* AI Suggestions */}
-      <div className="bg-yellow-50 border-t border-yellow-200 px-4 py-2">
+      {/* AI Suggestions Panel */}
+      {showAISuggestions && aiSuggestions.length > 0 && (
+        <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-t border-purple-200 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center space-x-2">
+              <Brain className="h-5 w-5 text-purple-600" />
+              <span className="text-sm font-medium text-purple-800">AI Negotiation Assistant</span>
+            </div>
+            <button
+              onClick={() => setShowAISuggestions(false)}
+              className="text-xs text-purple-600 hover:text-purple-800"
+            >
+              Hide
+            </button>
+          </div>
+          <div className="grid grid-cols-1 gap-2">
+            {aiSuggestions.map((suggestion, index) => (
+              <button
+                key={index}
+                onClick={() => handleSuggestionClick(suggestion)}
+                className="text-left text-sm bg-white hover:bg-purple-50 border border-purple-200 rounded-lg px-3 py-2 transition-colors"
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Voice Feature Coming Soon */}
+      <div className="bg-yellow-50 border-t border-yellow-200 px-4 py-3">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-yellow-800">AI Suggestion:</span>
-          <button
-            onClick={suggestCounterOffer}
-            className="text-sm bg-yellow-200 hover:bg-yellow-300 px-3 py-1 rounded-full transition-colors"
-          >
-            Get Fair Price
-          </button>
+          <div className="flex items-center space-x-2">
+            <Mic className="h-4 w-4 text-yellow-600" />
+            <span className="text-sm text-yellow-800">
+              {translate('Voice Negotiation Coming Soon', state.currentLanguage)}
+            </span>
+          </div>
+          <div className="text-xs text-yellow-600">
+            Speak in your native language
+          </div>
         </div>
       </div>
 

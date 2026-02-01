@@ -1,5 +1,5 @@
 import React from 'react';
-import { Store, User } from 'lucide-react';
+import { Store, User, Brain } from 'lucide-react';
 import { LanguageSelector } from './LanguageSelector';
 import { translate } from '../services/translationService';
 import { useApp } from '../contexts/AppContext';
@@ -16,6 +16,10 @@ export const Header: React.FC = () => {
             <h1 className="text-xl font-bold">
               {translate('Smart Mandi', state.currentLanguage)}
             </h1>
+            <div className="hidden sm:flex items-center space-x-1 bg-white/20 rounded-full px-2 py-1">
+              <Brain className="h-4 w-4" />
+              <span className="text-xs font-medium">AI-Powered</span>
+            </div>
           </div>
           
           <div className="flex items-center space-x-4">

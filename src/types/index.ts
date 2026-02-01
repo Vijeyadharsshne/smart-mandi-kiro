@@ -60,3 +60,33 @@ export interface PriceInsight {
   confidence: number;
   lastUpdated: Date;
 }
+
+export interface MarketTrendData {
+  date: string;
+  price: number;
+  volume: number;
+}
+
+export interface CropInsight {
+  optimalSellingWindow: string;
+  demandLevel: 'high' | 'medium' | 'low';
+  recommendedBuyerType: string;
+  seasonalFactors: string[];
+  qualityPremium: number;
+}
+
+export interface FairTradeAlert {
+  id: string;
+  type: 'price_too_low' | 'price_too_high' | 'market_volatility';
+  severity: 'low' | 'medium' | 'high';
+  message: string;
+  recommendation: string;
+  isActive: boolean;
+}
+
+export interface BharatImpactSettings {
+  enabled: boolean;
+  prioritizeFarmers: boolean;
+  enhancedMultilingual: boolean;
+  smallFarmerGuidance: boolean;
+}

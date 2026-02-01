@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { User, Language, Listing, Negotiation } from '../types';
+import { User, Language, Listing, Negotiation, BharatImpactSettings } from '../types';
 
 interface AppState {
   user: User | null;
@@ -7,6 +7,7 @@ interface AppState {
   listings: Listing[];
   negotiations: Negotiation[];
   isLoading: boolean;
+  bharatImpactMode: BharatImpactSettings;
 }
 
 type AppAction =
@@ -17,7 +18,9 @@ type AppAction =
   | { type: 'SET_NEGOTIATIONS'; payload: Negotiation[] }
   | { type: 'ADD_NEGOTIATION'; payload: Negotiation }
   | { type: 'UPDATE_NEGOTIATION'; payload: Negotiation }
-  | { type: 'SET_LOADING'; payload: boolean };
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'TOGGLE_BHARAT_MODE'; payload?: boolean }
+  | { type: 'UPDATE_BHARAT_SETTINGS'; payload: Partial<BharatImpactSettings> };
 
 const initialState: AppState = {
   user: null,
@@ -25,6 +28,12 @@ const initialState: AppState = {
   listings: [],
   negotiations: [],
   isLoading: false,
+  bharatImpactMode: {
+    enabled: true,
+    prioritizeFarmers: true,
+    enhancedMultilingual: true,
+    smallFarmerGuidance: true
+  }
 };
 
 const appReducer = (state: AppState, action: AppAction): AppState => {
@@ -50,6 +59,22 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
       };
     case 'SET_LOADING':
       return { ...state, isLoading: action.payload };
+    case 'TOGGLE_BHARAT_MODE':
+      return {
+        ...state,
+        bharatImpactMode: {
+          ...state.bharatImpactMode,
+          enabled: action.payload !== undefined ? action.payload : !state.bharatImpactMode.enabled
+        }
+      };
+    case 'UPDATE_BHARAT_SETTINGS':
+      return {
+        ...state,
+        bharatImpactMode: {
+          ...state.bharatImpactMode,
+          ...action.payload
+        }
+      };
     default:
       return state;
   }
